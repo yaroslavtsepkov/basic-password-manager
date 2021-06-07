@@ -2,9 +2,14 @@ import pandas as pd
 from Utils import *
 from Cipher import *
 class User:
-    """ DOCS """
+    """ Базовый класс user """
+    
     def __init__(self, username, password):
-        """ DOCS """
+        """ 
+        Инициализация пользователя
+        Входные параметры строковые username, password
+        Возвращает экземпляр класса User
+        """
         self.username = username
         self.password = password
         self.records = pd.DataFrame()
@@ -12,21 +17,37 @@ class User:
         self.AES = AESCipher(self.password)
 
     def setConfig(self, email):
+        """ 
+        Простая функция конфигурации, принимает Email
+        для того чтобы использовать его в будущем по умолчанию 
+        """
         self.email = email
 
     def addRecord(self, record):
+        """ 
+        Добавление и шифрование записи в таблицу 
+        Принимает параметр record - dict
+        """
         if self.email is not None:
             record['email'] = self.email
         record['password'] = self.AES.encrypt(genPassword())
         self.records = self.records.append(pd.Series(record), ignore_index=True)
     
     def getRecords(self, password):
+        """ 
+        Функция возвращает все записи 
+        Принимает параметр password строка 
+        Если password соответсвует мастер паролю пользователя
+        то все пароли будут расшифрованны, иначе выводит
+        зашифрованные пароли
+        """
         if password == self.password:
             return self.records['password'].map(lambda x: self.AES.decrypt(x))
         else:
             return self.records
 
     def getRecord(self, account, key):
+        """ Поиск записи согласно аккаунту """
         return self.records.query("account == @account")
 
     def getUsername(self)->str:

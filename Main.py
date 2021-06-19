@@ -21,6 +21,6 @@ while command!=":q":
     elif command==4:
         user.dumpFile(input("filename:\t"),input("decrypting? (yes/no):\t"))
     elif command==5:
-        user.setConfig(email='yaroslav.tsepkov@gmail.com')
+        user.setConfig(email='example@email.com')
     else:
         print("Not found command:\t")

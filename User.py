@@ -10,8 +10,8 @@ class User:
         Входные параметры строковые username, password
         Возвращает экземпляр класса User
         """
-        self.username = username
-        self.password = password
+        self.username: str = username
+        self.password: str = password # Мастер ключ
         self.records = pd.DataFrame()
         self.email = None
         self.AES = AESCipher(self.password)
